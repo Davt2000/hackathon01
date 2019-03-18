@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+
 class Word:
     def __init__(self, m, v, h, f, wind, time=0.001):
         self._m = float(m)
