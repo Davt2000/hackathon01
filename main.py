@@ -1,21 +1,44 @@
-import csv
+from csv import DictReader
 from collections import OrderedDict
 
 
-def read(obj):
-    d = csv.DictReader(obj, delimiter=',')
-    return d
+def read(path):
+    f = open(path)
+    d = DictReader(f, delimiter=',')
+    out = OrderedDict()
+    if len(d.fieldnames) == 2:
+        for i in d:
+            out[int(i[d.fieldnames[0]])] = float(i[d.fieldnames[1]])
+    else:
+        for i in d:
+            out[int(i[d.fieldnames[0]])] = (float(i[d.fieldnames[1]]), float(i[d.fieldnames[2]]))
+    f.close()
+    return out
 
 
-f1 = open("Data/F.csv")
-f2 = open("Data/Wind.csv")
+class Missile:
+    def __init__(self, mass=100, vx=0, vy=0, vz=0, coords=(0, 1000, 0)):
+        self.mass = mass
+        self.vx = vx
+        self.vy = vy
+        self.vz = vz
+        self.v = (vx * vx + vz * vz)**0.5
+        self.x = coords[0]
+        self.y = coords[1]
+        self.z = coords[2]
 
-d1 = read(f1)
-d2 = read(f2)
+    def v_count(self):
+        self.v = (self.vx * self.vx + self.vz * self.vz)**0.5
+        return self.v
 
-print(*d1, sep="\n")
-print("******\n")
-print(*d2, sep="\n")
 
-f1.close()
-f2.close()
+d1 = read("Data/F.csv")
+d2 = read("Data/Wind.csv")
+
+G = 9.81
+t = 0
+
+gruz = Missile()
+
+while gruz.y > 0:
+    pass
